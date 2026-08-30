@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow — taskflow.sa</title>
+  <meta name="description" content="TaskFlow لإدارة المهام">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #121927;
+      --card2: #182133;
+      --text: #f4f7ff;
+      --muted: #95a2ba;
+      --line: #263247;
+      --primary: #7657ff;
+      --primary2: #22d3ee;
+      --danger: #ff5570;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 80% 0%, rgba(118, 87, 255, .22), transparent 30%),
+        radial-gradient(circle at 10% 30%, rgba(34, 211, 238, .08), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(18px);
+      background: rgba(9, 13, 22, .78);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 15px 6%;
+    }
+
+    .navbar {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 0 25px rgba(118,87,255,.7);
+    }
+
+    nav {
+      margin: auto;
+      display: flex;
+      gap: 25px;
+      color: var(--muted);
+    }
+
+    nav a {
+      transition: .2s;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 11px 17px;
+      font-weight: 800;
+      transition: .2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .primary {
+      color: white;
+      background: linear-gradient(135deg, var(--primary), #9b7dff);
+    }
+
+    .secondary {
+      color: white;
+      background: var(--card);
+      border: 1px solid var(--line);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 6%;
+    }
+
+    .hero {
+      min-height: 80vh;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      align-items: center;
+      gap: 50px;
+      padding: 80px 0;
+    }
+
+    .badge {
+      color: var(--primary2);
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: .98;
+      letter-spacing: -4px;
+      margin-bottom: 25px;
+    }
+
+    h1 span {
+      background: linear-gradient(90deg, var(--primary), var(--primary2));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.12rem;
+      max-width: 650px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .preview {
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 25px;
+      box-shadow: 0 25px 70px rgba(0,0,0,.3);
+      animation: floating 5s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      50% {
+        transform: translateY(-14px);
+      }
+    }
+
+    .preview-top {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 900;
+    }
+
+    .progress {
+      height: 10px;
+      background: var(--line);
+      border-radius: 100px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .progress span {
+      display: block;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--primary2));
+      transition: .5s;
+    }
+
+    .preview-item {
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .check-small {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: rgba(34,211,238,.13);
+      color: var(--primary2);
+    }
+
+    section {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      color: var(--primary2);
+      font-weight: 800;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      margin-top: 8px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .search {
+      flex: 1;
+      min-width: 230px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0 15px;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 14px 0;
+      border: 0;
+      outline: 0;
+      color: white;
+      background: transparent;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter {
+      background: var(--card);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+
+    .filter.active {
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 2rem;
+    }
+
+    .stat span {
+      color: var(--muted);
+    }
+
+    .tasks {
+      display: grid;
+      gap: 14px;
+    }
+
+    .task {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 17px;
+      animation: showTask .35s ease;
+    }
+
+    @keyframes showTask {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .task-check {
+      width: 29px;
+      height: 29px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: transparent;
+      color: white;
+    }
+
+    .task.done .task-check {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .task.done .task-name {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .task-name {
+      font-weight: 900;
+    }
+
+    .task-description {
+      color: var(--muted);
+      font-size: .9rem;
+      white-space: pre-wrap;
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .small {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      border: 1px solid var(--line);
+      background: var(--card2);
+      color: white;
+    }
+
+    .small.delete {
+      color: var(--danger);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      border: 1px dashed var(--line);
+      border-radius: 22px;
+    }
+
+    .empty h3 {
+      margin-bottom: 7px;
+    }
+
+    .empty p {
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .about {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 35px;
+    }
+
+    .about p {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 30px 6%;
+      border-top: 1px solid var(--line);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      place-items: center;
+    }
+
+    .modal.open {
+      display: grid;
+    }
+
+    .backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.65);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-box {
+      position: relative;
+      width: min(92%, 520px);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 27px;
+      z-index: 1;
+      box-shadow: 0 30px 80px rgba(0,0,0,.5);
+      animation: modalUp .25s ease;
+    }
+
+    @keyframes modalUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(.97);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .close {
+      position: absolute;
+      left: 15px;
+      top: 12px;
+      border: 0;
+      background: var(--card2);
+      color: white;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      font-size: 1.4rem;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      font-weight: 800;
+    }
+
+    label input,
+    label textarea {
+      background: var(--card2);
+      color: white;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      outline: none;
+      padding: 12px;
+    }
+
+    label input:focus,
+    label textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 5px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 300;
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 13px 17px;
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: .25s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: .7s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 800px) {
+      nav {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 55px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .about {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        flex-direction: column;
+        align-items: start;
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="navbar">
+    <a class="logo" href="#home">
+      <span class="logo-dot"></span>
+      TaskFlow
+    </a>
+
+    <nav>
+      <a href="#home">الرئيسية</a>
+      <a href="#tasks">المهام</a>
+      <a href="#about">عن الموقع</a>
+    </nav>
+
+    <div class="header-buttons">
+      <button class="btn secondary" id="themeBtn">☾</button>
+      <button class="btn secondary" id="loginBtn">دخول</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section id="home" class="hero reveal">
+    <div>
+      <div class="badge">● TaskFlow.sa</div>
+
+      <h1>
+        رتّب يومك.<br>
+        <span>أنجز أكثر.</span>
+      </h1>
+
+      <p>
+        تطبيق بسيط لإدارة المهام اليومية، بتصميم متحرك ووظائف حقيقية وحفظ تلقائي للمهام.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn primary" href="#tasks">ابدأ الآن ↓</a>
+        <button class="btn secondary" id="sampleBtn">إضافة مهام تجريبية</button>
+      </div>
+    </div>
+
+    <div class="preview">
+      <div class="preview-top">
+        <span>مهام اليوم</span>
+        <span id="previewCount">0</span>
+      </div>
+
+      <div class="progress">
+        <span id="previewProgress"></span>
+      </div>
+
+      <div class="preview-item">
+        <span class="check-small">✓</span>
+        مراجعة الكود
+      </div>
+
+      <div class="preview-item">
+        <span class="check-small">✓</span>
+        اختبار الأزرار
+      </div>
+
+      <div class="preview-item">
+        <span class="check-small">•</span>
+        نشر الموقع
+      </div>
+    </div>
+  </section>
+
+  <section id="tasks" class="reveal">
+
+    <div class="section-title">
+      <div>
+        <div class="eyebrow">لوحة المهام</div>
+        <h2>كل شيء في مكان واحد</h2>
+      </div>
+
+      <button class="btn primary" id="addBtn">+ مهمة جديدة</button>
+    </div>
+
+    <div class="toolbar">
+
+      <div class="search">
+        <input id="searchInput" type="search" placeholder="ابحث عن مهمة...">
+      </div>
+
+      <div class="filters">
+        <button class="filter active" data-filter="all">الكل</button>
+        <button class="filter" data-filter="active">غير مكتملة</button>
+        <button class="filter" data-filter="done">مكتملة</button>
+      </div>
+
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <strong id="total">0</strong>
+        <span>كل المهام</span>
+      </div>
+
+      <div class="stat">
+        <strong id="active">0</strong>
+        <span>قيد التنفيذ</span>
+      </div>
+
+      <div class="stat">
+        <strong id="done">0</strong>
+        <span>مكتملة</span>
+      </div>
+    </div>
+
+    <div id="empty" class="empty">
+      <h3>لا توجد مهام حاليًا</h3>
+      <p>أضف أول مهمة وابدأ.</p>
+      <button class="btn primary" id="emptyAdd">إنشاء مهمة</button>
+    </div>
+
+    <div id="taskList" class="tasks"></div>
+
+  </section>
+
+  <section id="about" class="about reveal">
+    <div>
+      <div class="eyebrow">عن المشروع</div>
+      <h2>TaskFlow</h2>
+    </div>
+
+    <p>
+      مشروع تدريبي متكامل للواجهة الأمامية.
+      جميع أزرار المهام تعمل فعليًا، ويمكن الإضافة والتعديل والحذف والإكمال والبحث والتصفية،
+      ويتم حفظ البيانات داخل المتصفح حتى بعد تحديث الصفحة.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 TaskFlow.sa — مشروع تدريبي
+</footer>
+
+
+<!-- نافذة المهمة -->
+<div class="modal" id="taskModal">
+  <div class="backdrop"></div>
+
+  <div class="modal-box">
+    <button class="close" id="closeTask">×</button>
+
+    <h2 id="modalTitle">مهمة جديدة</h2>
+
+    <form id="taskForm">
+
+      <input type="hidden" id="taskId">
+
+      <label>
+        اسم المهمة
+        <input id="taskName" maxlength="120" required placeholder="مثال: بناء الصفحة الرئيسية">
+      </label>
+
+      <label>
+        الوصف
+        <textarea id="taskDescription" rows="4" maxlength="500"
+          placeholder="اكتب تفاصيل المهمة..."></textarea>
+      </label>
+
+      <div class="form-actions">
+        <button type="button" class="btn secondary" id="cancelTask">إلغاء</button>
+        <button type="submit" class="btn primary">حفظ</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+
+<!-- نافذة الدخول -->
+<div class="modal" id="loginModal">
+  <div class="backdrop"></div>
+
+  <div class="modal-box">
+    <button class="close" id="closeLogin">×</button>
+
+    <h2>تسجيل الدخول</h2>
+
+    <form id="loginForm">
+
+      <label>
+        البريد الإلكتروني
+        <input type="email" id="email" required autocomplete="email">
+      </label>
+
+      <label>
+        كلمة المرور
+        <input type="password" id="password" minlength="8" required>
+      </label>
+
+      <div class="form-actions">
+        <button type="button" class="btn secondary" id="demoLogin">
+          دخول تجريبي
+        </button>
+
+        <button type="submit" class="btn primary">
+          دخول
+        </button>
+      </div>
+
+      <p id="loginMessage" style="color:#95a2ba;"></p>
+
+    </form>
+  </div>
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+  let tasks = JSON.parse(localStorage.getItem("taskflow_tasks") || "[]");
+  let currentFilter = "all";
+  let search = "";
+
+  const $ = selector => document.querySelector(selector);
+
+  function id() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2);
+  }
+
+  function save() {
+    localStorage.setItem("taskflow_tasks", JSON.stringify(tasks));
+  }
+
+  function toast(message) {
+    const box = $("#toast");
+    box.textContent = message;
+    box.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(() => {
+      box.classList.remove("show");
+    }, 2200);
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[char]));
+  }
+
+  function filteredTasks() {
+    const text = search.toLowerCase().trim();
+
+    return tasks.filter(task => {
+
+      const status =
+        currentFilter === "all" ||
+        (currentFilter === "done" && task.done) ||
+        (currentFilter === "active" && !task.done);
+
+      const match =
+        !text ||
+        task.name.toLowerCase().includes(text) ||
+        task.description.toLowerCase().includes(text);
+
+      return status && match;
+    });
+  }
+
+  function render() {
+
+    $("#total").textContent = tasks.length;
+
+    const completed = tasks.filter(task => task.done).length;
+
+    $("#done").textContent = completed;
+    $("#active").textContent = tasks.length - completed;
+
+    $("#previewCount").textContent = tasks.length;
+
+    const percentage =
+      tasks.length === 0
+        ? 0
+        : Math.round((completed / tasks.length) * 100);
+
+    $("#previewProgress").style.width = percentage + "%";
+
+    const visible = filteredTasks();
+
+    $("#empty").style.display =
+      visible.length === 0 ? "block" : "none";
+
+    $("#taskList").innerHTML = visible.map(task => `
+      <article class="task ${task.done ? "done" : ""}" data-id="${task.id}">
+
+        <button
+          class="task-check"
+          data-action="toggle"
+          title="تغيير حالة المهمة">
+          ${task.done ? "✓" : ""}
+        </button>
+
+        <div>
+          <div class="task-name">
+            ${escapeHTML(task.name)}
+          </div>
+
+          ${
+            task.description
+              ? `<div class="task-description">${escapeHTML(task.description)}</div>`
+              : ""
+          }
+        </div>
+
+        <div class="task-actions">
+
+          <button
+            class="small"
+            data-action="edit"
+            title="تعديل">
+            ✎
+          </button>
+
+          <button
+            class="small delete"
+            data-action="delete"
+            title="حذف">
+            🗑
+          </button>
+
+        </div>
+
+      </article>
+    `).join("");
+  }
+
+  function openTask(task = null) {
+
+    $("#taskId").value = task ? task.id : "";
+    $("#modalTitle").textContent =
+      task ? "تعديل المهمة" : "مهمة جديدة";
+
+    $("#taskName").value =
+      task ? task.name : "";
+
+    $("#taskDescription").value =
+      task ? task.description : "";
+
+    $("#taskModal").classList.add("open");
+
+    setTimeout(() => $("#taskName").focus(), 100);
+  }
+
+  function closeTask() {
+    $("#taskModal").classList.remove("open");
+  }
+
+  $("#addBtn").onclick = () => openTask();
+  $("#emptyAdd").onclick = () => openTask();
+  $("#closeTask").onclick = closeTask;
+  $("#cancelTask").onclick = closeTask;
+
+  $("#taskModal .backdrop").onclick = closeTask;
+
+  $("#taskForm").onsubmit = event => {
+
+    event.preventDefault();
+
+    const taskId = $("#taskId").value;
+
+    const name = $("#taskName").value.trim();
+    const description =
+      $("#taskDescription").value.trim();
+
+    if (!name) return;
+
+    if (taskId) {
+
+      const task = tasks.find(task => task.id === taskId);
+
+      if (task) {
+        task.name = name;
+        task.description = description;
+      }
+
+      toast("تم تعديل المهمة");
+
+    } else {
+
+      tasks.unshift({
+        id: id(),
+        name,
+        description,
+        done: false
+      });
+
+      toast("تمت إضافة المهمة");
+    }
+
+    save();
+    render();
+    closeTask();
+  };
+
+
+  $("#taskList").onclick = event => {
+
+    const button = event.target.closest("button");
+
+    if (!button) return;
+
+    const card =
+      event.target.closest(".task");
+
+    if (!card) return;
+
+    const task =
+      tasks.find(task => task.id === card.dataset.id);
+
+    if (!task) return;
+
+    const action = button.dataset.action;
+
+    if (action === "toggle") {
+
+      task.done = !task.done;
+
+      save();
+      render();
+
+      toast(
+        task.done
+          ? "تم إكمال المهمة"
+          : "تمت إعادة فتح المهمة"
+      );
+
+    }
+
+    if (action === "edit") {
+      openTask(task);
+    }
+
+    if (action === "delete") {
+
+      const confirmed =
+        confirm("هل تريد حذف هذه المهمة؟");
+
+      if (!confirmed) return;
+
+      tasks =
+        tasks.filter(item => item.id !== task.id);
+
+      save();
+      render();
+
+      toast("تم حذف المهمة");
+    }
+  };
+
+
+  document.querySelectorAll(".filter").forEach(button => {
+
+    button.onclick = () => {
+
+      document
+        .querySelectorAll(".filter")
+        .forEach(item => item.classList.remove("active"));
+
+      button.classList.add("active");
+
+      currentFilter =
+        button.dataset.filter;
+
+      render();
+    };
+  });
+
+
+  $("#searchInput").oninput = event => {
+
+    search = event.target.value;
+
+    render();
+  };
+
+
+  $("#sampleBtn").onclick = () => {
+
+    tasks.unshift(
+      {
+        id: id(),
+        name: "بناء الصفحة الرئيسية",
+        description: "إنهاء تصميم الصفحة الرئيسية.",
+        done: false
+      },
+      {
+        id: id(),
+        name: "اختبار الأزرار",
+        description: "التأكد أن كل زر ينفذ وظيفته.",
+        done: false
+      },
+      {
+        id: id(),
+        name: "اختبار الجوال",
+        description: "تجربة التصميم على الشاشات الصغيرة.",
+        done: false
+      }
+    );
+
+    save();
+    render();
+
+    toast("تمت إضافة المهام التجريبية");
+  };
+
+
+  // الوضع الليلي/المضيء
+  const themeButton = $("#themeBtn");
+
+  themeButton.onclick = () => {
+
+    const light =
+      document.body.dataset.theme === "light";
+
+    if (light) {
+
+      document.body.dataset.theme = "";
+
+      document.documentElement.style.setProperty(
+        "--bg", "#090d16"
+      );
+
+      document.documentElement.style.setProperty(
+        "--card", "#121927"
+      );
+
+      themeButton.textContent = "☾";
+
+    } else {
+
+      document.body.dataset.theme = "light";
+
+      document.documentElement.style.setProperty(
+        "--bg", "#f4f7fb"
+      );
+
+      document.documentElement.style.setProperty(
+        "--card", "#ffffff"
+      );
+
+      document.documentElement.style.setProperty(
+        "--card2", "#f1f5f9"
+      );
+
+      document.documentElement.style.setProperty(
+        "--text", "#172033"
+      );
+
+      document.documentElement.style.setProperty(
+        "--muted", "#667085"
+      );
+
+      themeButton.textContent = "☀";
+    }
+  };
+
+
+  // دخول تجريبي يعمل فعليًا داخل هذه النسخة
+  $("#loginBtn").onclick = () => {
+
+    $("#loginModal").classList.add("open");
+
+    $("#loginMessage").textContent = "";
+  };
+
+  $("#closeLogin").onclick = () => {
+    $("#loginModal").classList.remove("open");
+  };
+
+  $("#loginModal .backdrop").onclick = () => {
+    $("#loginModal").classList.remove("open");
+  };
+
+  $("#demoLogin").onclick = () => {
+
+    $("#email").value = "demo@taskflow.sa";
+    $("#password").value = "TaskFlow123";
+
+    $("#loginMessage").textContent =
+      "تم تجهيز بيانات الدخول التجريبية.";
+
+    toast("تم تجهيز الدخول التجريبي");
+  };
+
+  $("#loginForm").onsubmit = event => {
+
+    event.preventDefault();
+
+    const email = $("#email").value.trim();
+    const password = $("#password").value;
+
+    if (!email || password.length < 8) {
+
+      $("#loginMessage").textContent =
+        "اكتب بريدًا صحيحًا وكلمة مرور من 8 أحرف على الأقل.";
+
+      return;
+    }
+
+    localStorage.setItem(
+      "taskflow_user",
+      JSON.stringify({ email })
+    );
+
+    $("#loginMessage").textContent =
+      "تم تسجيل الدخول في النسخة التجريبية.";
+
+    toast("تم تسجيل الدخول");
+
+    setTimeout(() => {
+
+      $("#loginModal").classList.remove("open");
+
+    }, 700);
+  };
+
+
+  // ظهور العناصر عند النزول في الصفحة
+  const observer =
+    new IntersectionObserver(entries => {
+
+      entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+        }
+
+      });
+
+    }, { threshold: .12 });
+
+  document
+    .querySelectorAll(".reveal")
+    .forEach(element => observer.observe(element));
+
+
+  document.onkeydown = event => {
+
+    if (event.key === "Escape") {
+
+      $("#taskModal").classList.remove("open");
+      $("#loginModal").classList.remove("open");
+
+    }
+  };
+
+
+  render();
+</script>
+
+</body>
+</html>
