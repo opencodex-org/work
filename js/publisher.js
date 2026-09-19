@@ -1,0 +1,2 @@
+export const PUBLISH_CODE='SA-PUBLISH-2026';
+export function validatePublish(code,key){if(key!==PUBLISH_CODE)return{ok:false,message:'كود النشر غير صحيح.'};if(!code.trim())return{ok:false,message:'لم يتم النشر: الكود فارغ.'};if(!/<html[\s>]/i.test(code)||!/<body[\s>]/i.test(code))return{ok:false,message:'لم يتم النشر: الكود ليس صفحة HTML صالحة.'};if(/<script[^>]*>\s*(?:throw|syntaxerror)/i.test(code))return{ok:false,message:'لم يتم النشر: يوجد خطأ واضح في JavaScript.'};return{ok:true,message:'تم فحص الكود بنجاح ونشر الموقع.'}}

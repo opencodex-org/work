@@ -1,34 +1,56 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>منشئ — استوديو المواقع</title>
-<style>
-:root{--bg:#08111f;--panel:#101c2d;--panel2:#15243a;--line:#263a55;--text:#f4f8ff;--muted:#8fa2bc;--primary:#6d5dfc;--cyan:#2dd4bf;--danger:#fb7185;--shadow:0 24px 70px #0005}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0,#243265 0,transparent 32%),var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}button,input,textarea{font:inherit}button{cursor:pointer;border:0;color:inherit}.hidden{display:none!important}.btn{border-radius:11px;padding:10px 15px;font-weight:800}.primary{background:linear-gradient(135deg,var(--primary),#9184ff)}.ghost{background:var(--panel2);border:1px solid var(--line)}.danger{color:var(--danger)}.muted{color:var(--muted)}
-.topbar{height:70px;border-bottom:1px solid var(--line);background:#08111fcc;backdrop-filter:blur(15px);display:flex;align-items:center;gap:18px;padding:0 28px}.brand{font-weight:900;font-size:21px;display:flex;gap:9px;align-items:center}.dot{width:12px;height:12px;background:linear-gradient(135deg,var(--primary),var(--cyan));border-radius:50%;box-shadow:0 0 18px #6d5dfc}.topbar .spacer{flex:1}.user{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:13px}.avatar{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:#32466a;color:#fff;font-weight:bold}
-.landing{min-height:calc(100vh - 70px);display:grid;place-items:center;padding:30px}.hero{max-width:780px;text-align:center}.hero .eyebrow{color:var(--cyan);font-weight:bold}.hero h1{font-size:clamp(35px,6vw,72px);line-height:1.1;margin:18px 0}.gradient{background:linear-gradient(90deg,#a394ff,var(--cyan));-webkit-background-clip:text;color:transparent}.hero p{color:var(--muted);font-size:18px;line-height:2}.login-card{display:inline-flex;align-items:center;gap:12px;margin-top:22px;padding:15px 22px;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:var(--shadow)}.google{width:24px;height:24px;border-radius:50%;background:#fff;color:#4285f4;display:grid;place-items:center;font-weight:900}.note{font-size:12px;color:var(--muted);margin-top:16px}
-.workspace{height:calc(100vh - 70px);padding:20px 24px}.projectbar{display:flex;align-items:center;gap:12px;margin-bottom:16px}.projectbar h2{margin:0;font-size:19px}.projectbar .spacer{flex:1}.status{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}.status i{width:8px;height:8px;border-radius:50%;background:var(--cyan)}.editor-layout{height:calc(100% - 56px);display:grid;grid-template-columns:minmax(330px,.9fr) minmax(400px,1.1fr);gap:16px;direction:ltr}.panel{direction:rtl;background:#0e1a2b;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);min-height:0}.panel-head{height:58px;padding:0 17px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);background:#122137}.panel-head .spacer{flex:1}.panel-head strong{font-size:15px}.tabs{display:flex;gap:5px}.tab{padding:7px 11px;border-radius:8px;background:transparent;color:var(--muted);font-size:12px}.tab.active{background:#293a57;color:#fff}.code-wrap{height:calc(100% - 58px);position:relative}.code{width:100%;height:100%;resize:none;background:#081321;color:#dbeafe;border:0;outline:0;padding:18px;direction:ltr;text-align:left;font:14px/1.7 Consolas,monospace;tab-size:2}.upload{position:absolute;inset:0;display:grid;place-items:center;background:#081321ee;text-align:center}.upload-box{padding:30px;border:1px dashed #5e7191;border-radius:14px}.preview-wrap{height:calc(100% - 58px);padding:14px;background:#dce5f1}.preview{width:100%;height:100%;background:#fff;border:0;border-radius:10px}.empty-preview{height:100%;display:grid;place-items:center;color:#50627a;text-align:center;background:#f4f7fb;border-radius:10px}.empty-preview strong{display:block;font-size:18px}.modal{position:fixed;inset:0;background:#0009;display:grid;place-items:center;z-index:10;padding:20px}.dialog{width:min(460px,100%);background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow)}.dialog h3{margin:0 0 10px}.dialog p{color:var(--muted);font-size:13px}.field{display:grid;gap:7px;margin:17px 0}.field input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:#fff;outline:0}.field input:focus{border-color:var(--primary)}.dialog-actions{display:flex;gap:8px;justify-content:flex-start}.message{padding:10px;border-radius:9px;font-size:13px;margin:12px 0;display:none}.message.error{display:block;background:#4a1d2b;color:#fecdd3}.message.success{display:block;background:#123f3b;color:#a7f3d0}
-.toast{position:fixed;bottom:22px;right:22px;padding:13px 17px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;transform:translateY(20px);opacity:0;transition:.25s;z-index:20}.toast.show{transform:none;opacity:1}@media(max-width:850px){.workspace{height:auto;padding:14px}.editor-layout{height:auto;grid-template-columns:1fr}.panel{height:470px}.topbar{padding:0 15px}.topbar .muted{display:none}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="منصة إنشاء وتحرير ونشر المواقع">
+  <title>منشئ — استوديو المواقع</title>
+  <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-<header class="topbar"><div class="brand"><span class="dot"></span>منشئ</div><div class="spacer"></div><div id="userArea" class="user hidden"><span id="userName">مستخدم Google</span><span class="avatar">G</span><button id="logoutBtn" class="btn ghost">خروج</button></div><button id="loginTop" class="btn primary">تسجيل الدخول</button></header>
-<section id="landing" class="landing"><div class="hero"><div class="eyebrow">استوديو بناء المواقع</div><h1>حوّل فكرتك إلى موقع<br><span class="gradient">يعمل فعليًا</span></h1><p>سجّل بحساب Google، أنشئ مشروعك، اكتب الكود أو ارفعه، وشاهد النتيجة مباشرة قبل النشر.</p><button id="googleBtn" class="login-card"><span class="google">G</span><b>المتابعة باستخدام Google</b></button><div class="note">نسخة تجريبية للواجهة — اربط Google OAuth وواجهة النشر الخلفية للإنتاج الفعلي.</div></div></section>
-<section id="workspace" class="workspace hidden"><div class="projectbar"><button id="backBtn" class="btn ghost">← المشاريع</button><h2 id="projectTitle">مشروعي الأول</h2><div class="spacer"></div><span class="status"><i></i><span id="saveStatus">محفوظ تلقائيًا</span></span><button id="publishBtn" class="btn primary">نشر الموقع</button></div><div class="editor-layout"><div class="panel"><div class="panel-head"><strong>الكود البرمجي</strong><div class="spacer"></div><div class="tabs"><button class="tab active" data-tab="write">كتابة الكود</button><button class="tab" data-tab="upload">رفع ملف</button></div></div><div class="code-wrap"><textarea id="code" class="code" spellcheck="false"></textarea><div id="uploadBox" class="upload hidden"><div class="upload-box"><h3>ارفع ملف HTML</h3><p class="muted">سيتم تحميله في محرر الكود والمعاينة</p><input id="fileInput" type="file" accept=".html,text/html"></div></div></div></div><div class="panel"><div class="panel-head"><strong>المعاينة المباشرة</strong><div class="spacer"></div><span class="muted">تتحدث تلقائيًا</span></div><div class="preview-wrap"><iframe id="preview" class="preview" sandbox="allow-scripts"></iframe></div></div></div></section>
-<div id="projectModal" class="modal hidden"><div class="dialog"><h3>أنشئ مشروعًا جديدًا</h3><p>ابدأ بصفحة HTML، ويمكنك تعديلها ومشاهدة المعاينة فورًا.</p><label class="field">اسم المشروع<input id="projectName" placeholder="مثال: موقعي التعريفي" maxlength="60"></label><div class="dialog-actions"><button id="createProject" class="btn primary">إنشاء المشروع</button></div></div></div>
-<div id="publishModal" class="modal hidden"><div class="dialog"><h3>نشر الموقع</h3><p>سيتم اختبار الكود أولًا. لا يمكن النشر إذا كان الكود فارغًا أو غير صالح.</p><label class="field">كود النشر<input id="publishCode" placeholder="أدخل كود النشر"></label><div id="publishMessage" class="message"></div><div class="dialog-actions"><button id="cancelPublish" class="btn ghost">إلغاء</button><button id="confirmPublish" class="btn primary">فحص ونشر</button></div></div></div><div id="toast" class="toast"></div>
-<script>
-const starter='<!doctype html>\n<html lang="ar" dir="rtl">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>موقعي الجديد</title>\n  <style>body{font-family:Arial;background:#f5f7fb;color:#172033;display:grid;place-items:center;min-height:90vh}main{text-align:center;padding:40px}button{padding:12px 20px;border:0;border-radius:9px;background:#6658e8;color:#fff}</style>\n</head>\n<body><main><h1>مرحبًا بك في موقعي</h1><p>عدّل هذا الكود وشاهد النتيجة مباشرة.</p><button onclick="alert(\'يعمل!\')">جرّب الزر</button></main></body>\n</html>';
-const $=s=>document.querySelector(s);let project=JSON.parse(localStorage.getItem('builder_project')||'null');
-function toast(t){const x=$('#toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2400)}
-function save(){if(!project)return;project.code=$('#code').value;localStorage.setItem('builder_project',JSON.stringify(project));$('#saveStatus').textContent='محفوظ تلقائيًا'}
-function preview(){const code=$('#code').value;$('#preview').srcdoc=code;$('#saveStatus').textContent='جارٍ الحفظ…';clearTimeout(window.saveTimer);window.saveTimer=setTimeout(save,500)}
-function openWorkspace(){ $('#landing').classList.add('hidden');$('#workspace').classList.remove('hidden');$('#loginTop').classList.add('hidden');$('#userArea').classList.remove('hidden');$('#projectTitle').textContent=project.name;$('#code').value=project.code;preview() }
-function login(){if(!project){$('#projectModal').classList.remove('hidden');return}openWorkspace()}
-$('#googleBtn').onclick=login;$('#loginTop').onclick=login;$('#createProject').onclick=()=>{const name=$('#projectName').value.trim()||'مشروعي الأول';project={name,code:starter,published:false};localStorage.setItem('builder_project',JSON.stringify(project));$('#projectModal').classList.add('hidden');openWorkspace();toast('تم إنشاء المشروع')};
-$('#code').oninput=preview;$('#logoutBtn').onclick=()=>{save();$('#workspace').classList.add('hidden');$('#landing').classList.remove('hidden');$('#userArea').classList.add('hidden');$('#loginTop').classList.remove('hidden');toast('تم الحفظ والخروج')};$('#backBtn').onclick=()=>{$('#workspace').classList.add('hidden');$('#landing').classList.remove('hidden')};
-document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');$('#uploadBox').classList.toggle('hidden',t.dataset.tab!=='upload')});$('#fileInput').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$('#code').value=r.result;preview();document.querySelector('[data-tab="write"]').click();toast('تم تحميل الملف')};r.readAsText(f)};
-$('#publishBtn').onclick=()=>{$('#publishModal').classList.remove('hidden');$('#publishMessage').className='message';$('#publishMessage').textContent='';$('#publishCode').focus()};$('#cancelPublish').onclick=()=>$('#publishModal').classList.add('hidden');$('#confirmPublish').onclick=()=>{const msg=$('#publishMessage'),code=$('#code').value.trim(),key=$('#publishCode').value.trim();msg.className='message';if(key!=='SA-PUBLISH-2026'){msg.textContent='كود النشر غير صحيح.';msg.classList.add('error');return}if(!code||!/<html[\s>]/i.test(code)||!/<body[\s>]/i.test(code)){msg.textContent='لم يتم النشر: الكود ليس صفحة HTML صالحة.';msg.classList.add('error');return}if(/<script[^>]*>\s*(?:throw|syntaxerror)/i.test(code)){msg.textContent='لم يتم النشر: يوجد خطأ في JavaScript داخل الكود.';msg.classList.add('error');return}project.published=true;save();msg.textContent='تم فحص الكود بنجاح ونشر الموقع.';msg.classList.add('success');setTimeout(()=>{$('#publishModal').classList.add('hidden');toast('تم النشر بنجاح')},1200)};
-if(project){}else $('#projectModal').classList.add('hidden');
-</script></body></html>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark"></span>منشئ</div>
+    <div class="topbar-actions">
+      <span id="saveStatus" class="save-status">جاهز</span>
+      <div id="userArea" class="user-area hidden"><span id="userName">مستخدم Google</span><span class="avatar">G</span><button id="logoutBtn" class="button ghost">خروج</button></div>
+      <button id="loginTop" class="button primary">تسجيل الدخول</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="landing" class="landing-view">
+      <div class="hero">
+        <span class="eyebrow">استوديو بناء المواقع</span>
+        <h1>حوّل فكرتك إلى موقع <span>يعمل فعليًا</span></h1>
+        <p>سجّل بحساب Google، أنشئ مشروعك، اكتب الكود أو ارفعه، وشاهد النتيجة مباشرة قبل النشر.</p>
+        <button id="googleBtn" class="google-button"><span class="google-icon">G</span>المتابعة باستخدام Google</button>
+        <small>واجهة تجريبية — اربط Google OAuth وخادم النشر للإنتاج الفعلي.</small>
+      </div>
+    </section>
+
+    <section id="workspace" class="workspace hidden">
+      <div class="project-toolbar">
+        <button id="backBtn" class="button ghost">← المشاريع</button>
+        <h2 id="projectTitle">مشروعي الأول</h2>
+        <div class="toolbar-spacer"></div>
+        <button id="publishBtn" class="button primary">نشر الموقع</button>
+      </div>
+      <div class="editor-grid">
+        <section class="panel code-panel">
+          <div class="panel-header"><strong>الكود البرمجي</strong><div class="editor-tabs"><button class="tab active" data-tab="write">كتابة الكود</button><button class="tab" data-tab="upload">رفع ملف</button></div></div>
+          <div class="editor-body"><textarea id="codeEditor" spellcheck="false" aria-label="محرر الكود"></textarea><div id="uploadPanel" class="upload-panel hidden"><div><h3>ارفع ملف HTML</h3><p>سيتم تحميله في المحرر والمعاينة.</p><input id="fileInput" type="file" accept=".html,text/html"></div></div></div>
+        </section>
+        <section class="panel preview-panel">
+          <div class="panel-header"><strong>المعاينة المباشرة</strong><span class="muted">تتحدث تلقائيًا</span></div>
+          <div class="preview-body"><iframe id="previewFrame" title="معاينة الموقع" sandbox="allow-scripts"></iframe></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="projectDialog" class="dialog"><form method="dialog"><h3>أنشئ مشروعًا جديدًا</h3><p>ابدأ بصفحة HTML ويمكنك تعديلها ومشاهدة النتيجة فورًا.</p><label>اسم المشروع<input id="projectName" maxlength="60" placeholder="مثال: موقعي التعريفي"></label><div class="dialog-actions"><button value="cancel" class="button ghost">إلغاء</button><button id="createProject" value="default" class="button primary">إنشاء المشروع</button></div></form></dialog>
+  <dialog id="publishDialog" class="dialog"><form method="dialog"><h3>نشر الموقع</h3><p>لن يتم النشر قبل فحص الكود وكود النشر.</p><label>كود النشر<input id="publishCode" autocomplete="off" placeholder="أدخل كود النشر"></label><div id="publishMessage" class="message"></div><div class="dialog-actions"><button value="cancel" class="button ghost">إلغاء</button><button id="confirmPublish" value="default" class="button primary">فحص ونشر</button></div></form></dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
